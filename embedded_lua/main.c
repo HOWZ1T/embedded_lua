@@ -8,64 +8,67 @@
 # include <lauxlib.h>
 #endif
 
-void print_error(lua_State* state)
+#include "callback.h"
+
+void print_error(lua_State* L)
 {
 	// the error message is on top of the stack
 	// fetch it, print it and then pop it off the stack
-	const char* msg = lua_tostring(state, -1);
+	const char* msg = lua_tostring(L, -1);
 	puts(msg);
-	lua_pop(state, 1);
+	lua_pop(L, 1);
 }
 
-void execute_script(const char* filename)
+lua_State* init()
 {
-	lua_State* state = luaL_newstate();
+	lua_State* L = luaL_newstate();
 
 	// make std libs available in the Lua object
-	luaL_openlibs(state);
+	luaL_openlibs(L);
 
+	// exposing c functions to the lua environment
+	lua_pushcfunction(L, c_fib);
+	lua_setglobal(L, "c_fib");
+
+	return L;
+}
+
+void close(lua_State* L)
+{
+	lua_close(L);
+}
+
+int execute_script(lua_State* L, const char* filename)
+{
 	int res;
 
 	// load the program; this supports both source code and bytecode files.
-	res = luaL_loadfile(state, filename);
+	res = luaL_loadfile(L, filename);
 
 	if (res != LUA_OK)
 	{
-		print_error(state);
-		lua_close(state);
-		return;
+		print_error(L);
+		return -1;
 	}
 
 	// execute the program by calling into it
 	// lua_pcall(lua_State *L, int nargs, int nresults, int msgh)
-	res = lua_pcall(state, 0, LUA_MULTRET, 0);
+	res = lua_pcall(L, 0, LUA_MULTRET, 0);
 
 	// handle errors caused by the lua script
 	if (res != LUA_OK)
 	{
-		print_error(state);
-		lua_close(state);
-		return;
+		print_error(L);
+		return -2;
 	}
 
-	// finally close the lua state
-	lua_close(state);
+	return 0;
 }
 
 int main(int argc, char *argv[])
 {
-	if (argc <= 1)
-	{
-		puts("Usage: run lua file(s)");
-		puts("Loads and executes Lua programs.");
-		return 1;
-	}
-
-	// execute all lua scripts given in the cmd line as arguments
-	for (int n = 1; n < argc; ++n)
-	{
-		execute_script(argv[n]);
-	}
-
+	lua_State* L = init();
+	execute_script(L, "fib.lua");
+	close(L);
 	return 0;
 }
