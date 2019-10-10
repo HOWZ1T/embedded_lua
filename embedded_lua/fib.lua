@@ -1,3 +1,5 @@
 for n = 0, 20 do
-	io.write(string.format("fib(%d): %d\n", n, c_fib(n)))
+	str_n = tostring(n)
+	str_f = tostring(c_fib(n))
+	print("fib(" .. str_n .. "): " .. str_f)
 end

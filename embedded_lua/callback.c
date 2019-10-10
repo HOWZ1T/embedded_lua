@@ -50,6 +50,36 @@ int c_fib(lua_State* L)
 	return 1; // number of results pushed to the stack
 }
 
+int c_print(lua_State* L)
+{
+	// each function has it's own function stack
+	// the num of function args will be on top of the stack
+	if (lua_gettop(L) != 1)
+	{
+		return luaL_error(L, "expecting exactly 1 argument");
+	}
+
+	// luaL_check* checks the argument's type and raises an error if it doesn't match
+	const char* str = luaL_checkstring(L, 1); // 1 = first argument
+	const char* ext = "\n";
+	char* out;
+
+	// creating the fmt str for printf
+	int buff_size = strlen(str) + strlen(ext) + 1;
+	out = malloc(buff_size);
+	if (out == NULL)
+	{
+		return luaL_error(L, "print(msg) failed to allocate memory for msg!");
+	}
+
+	strcpy_s(out, buff_size, str);
+	strcat_s(out, buff_size, ext);
+	printf(out);
+	free(out);
+
+	return 0; // number of results pushed to the stack
+}
+
 #ifdef __cplusplus
 }
 #endif
