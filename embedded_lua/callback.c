@@ -8,7 +8,7 @@
 
 #include "callback.h"
 
-//so that name mangling doesn't mess up function names
+//extern C if in cpp env so that name mangling doesn't mess up function names
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -65,7 +65,7 @@ int c_print(lua_State* L)
 	char* out;
 
 	// creating the fmt str for printf
-	int buff_size = strlen(str) + strlen(ext) + 1;
+	size_t buff_size = strlen(str) + strlen(ext) + (size_t)1;
 	out = malloc(buff_size);
 	if (out == NULL)
 	{

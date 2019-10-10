@@ -131,16 +131,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callback.c" />
+    <ClCompile Include="utils/lua.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="fib.lua">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="callback.h" />
+    <ClInclude Include="lua.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

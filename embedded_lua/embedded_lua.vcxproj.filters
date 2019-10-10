@@ -16,6 +16,12 @@
     <Filter Include="Source Files\scripts">
       <UniqueIdentifier>{72fd788a-19c3-41b4-9e14-ed31a7ae13d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{5c057695-4ba4-4077-bda7-6382cd659a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{884ba376-2b37-4419-a81c-d21be40404e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -24,15 +30,21 @@
     <ClCompile Include="callback.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lua.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lua.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="fib.lua">
+    <None Include="scripts\fib.lua">
       <Filter>Source Files\scripts</Filter>
-    </CopyFileToFolders>
+    </None>
   </ItemGroup>
 </Project>
