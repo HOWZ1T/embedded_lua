@@ -30,8 +30,8 @@
     <ClCompile Include="callback.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lua.c">
-      <Filter>Source Files\utils</Filter>
+    <ClCompile Include="utils/lua.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,8 +43,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="scripts\fib.lua">
+    <CopyFileToFolders Include="scripts\fib.lua">
       <Filter>Source Files\scripts</Filter>
-    </None>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

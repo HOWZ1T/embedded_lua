@@ -138,6 +138,12 @@
     <ClInclude Include="callback.h" />
     <ClInclude Include="lua.h" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="scripts\fib.lua">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/scripts/</DestinationFolders>
+    </CopyFileToFolders>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
