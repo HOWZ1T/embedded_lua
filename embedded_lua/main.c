@@ -83,8 +83,17 @@ void expose_lua_mod(lua_State* L, const char* modname, lua_CFunction openf, int 
 	}
 	lua_pop(L, 1); // removing library global from stack
 
+	// allocate null to write over data in to_remove to avoid messing with lua handled data
+	for (int i = 0; i < buff_len; i++)
+	{
+		to_remove[i] = '\0';
+	}
+
 	// freeing up allocated data
-	// TODO check this for memory leaks
+	for (int i = 0; i < buff_len; i++)
+	{
+		free(to_remove[i]);
+	}
 	free(to_remove);
 }
 
