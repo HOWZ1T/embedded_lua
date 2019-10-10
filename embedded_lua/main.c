@@ -15,6 +15,10 @@ lua_State* init()
 {
 	lua_State* L = luaL_newstate();
 
+	// exposing c functions
+	expose_func(L, c_fib, "c_fib");
+	expose_func(L, c_print, "print");
+
 	// adding safe lua std functions
 	// wl -> whitelist
 	
@@ -44,9 +48,18 @@ lua_State* init()
 	};
 	expose_lua_mod(L, "os", luaopen_os, 1, 3, os_wl);
 
-	// exposing c functions
-	expose_func(L, c_fib, "c_fib");
-	expose_func(L, c_print, "print");
+	// adding coroutine module
+	const char* const coroutine_wl[7] = {
+		"create",
+		"isyieldable",
+		"resume",
+		"running",
+		"status",
+		"wrap",
+		"yield",
+	};
+	expose_lua_mod(L, "coroutine", luaopen_coroutine, 1, 7, coroutine_wl);
+
 	return L;
 }
 

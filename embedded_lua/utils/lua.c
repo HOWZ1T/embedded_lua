@@ -36,8 +36,6 @@ void expose_func(lua_State* L, lua_CFunction c_func, char* func_name)
 }
 
 // int glb, bool for exposing the mod to the global table
-// WARNING: this will cause all exposed c functions to be removed from the table
-// C functions should only be exposed after all calls to expose_lua_mod
 void expose_lua_mod(lua_State* L, const char* modname, lua_CFunction openf, int glb, int whitelist_size, const char* const whitelist[])
 {
 	// helpful links
@@ -48,10 +46,10 @@ void expose_lua_mod(lua_State* L, const char* modname, lua_CFunction openf, int 
 	luaL_requiref(L, modname, openf, glb);
 
 	// get the library global
-	lua_getglobal(L, modname);
+	lua_getglobal(L, modname); // i: -1
 
 	// generate blacklist of functions based on the given whitelist
-	lua_pushnil(L);  // first key
+	lua_pushnil(L);  // first key i: -1, library global now i: -2
 	int buff_len = 256;
 	int to_remove_index = 0;
 	char** to_remove = calloc(buff_len, sizeof(char*));
@@ -60,8 +58,8 @@ void expose_lua_mod(lua_State* L, const char* modname, lua_CFunction openf, int 
 	if (!to_remove) perror("calloc failed in expose_lua_mod()"), exit(EXIT_FAILURE);
 
 	// traverse the mod's table
-	// 2 -> location of table on stack, it is at 2 and not 1 since we have pushed a nil onto the stack before hand
-	while (lua_next(L, 2) != 0)
+	// -2 -> location of table on stack, it is at -2 and not -1 since we have pushed a nil onto the stack before hand
+	while (lua_next(L, -2) != 0)
 	{
 		// get key (at index -2)
 		char* fn_name = (char *) lua_tostring(L, -2);
